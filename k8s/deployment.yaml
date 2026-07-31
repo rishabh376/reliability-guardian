@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reliability-guardian
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: reliability-guardian
+  template:
+    metadata:
+      labels:
+        app: reliability-guardian
+    spec:
+      containers:
+      - name: app
+        image: ghcr.io/example/reliability-guardian:latest
+        ports:
+        - containerPort: 8080
+        livenessProbe: { httpGet: { path: /healthz, port: 8080 } }
+        readinessProbe: { httpGet: { path: /healthz, port: 8080 } }
